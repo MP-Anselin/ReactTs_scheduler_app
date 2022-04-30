@@ -1,7 +1,8 @@
 import {sameDay} from "./sameDay";
 import {getDatabase} from "../../api/apiData";
 
-export const saveDate = (state: any, action: { payload: any; }) => {
+export const setDate = (state: any, action: { payload: any; }) => {
+
     const date = action.payload;
 // Calendar Start Day
     const d1 = new Date(date.getFullYear(), date.getMonth()    , 1);

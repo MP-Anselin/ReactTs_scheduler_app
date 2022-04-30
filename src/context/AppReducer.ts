@@ -1,9 +1,9 @@
-import {saveDate} from "./reducer-functions/saveDate";
+import {setDate} from "./reducer-functions/setDate";
 import {addTask} from "./reducer-functions/addTask";
 import {saveTask} from "./reducer-functions/saveTask";
 import {deleteTask} from "./reducer-functions/deleteTask";
 
-export default (state: { tasks: any[]; }, action: { type: any; payload: any; }) => {
+const reducerAction = (state: { tasks: any[]; }, action: { type: any; payload: any; }) => {
     switch (action.type) {
         case 'DELETE_TASK':
             return deleteTask(state, action)
@@ -11,9 +11,11 @@ export default (state: { tasks: any[]; }, action: { type: any; payload: any; }) 
             return addTask(state, action);
         case 'SAVE_TASK':
             return saveTask(state, action);
-        case 'SAVE_DATE':
-            return saveDate(state, action);
+        case 'SET_DATE':
+            return setDate(state, action);
         default:
             return state;
     }
 }
+
+export default reducerAction;

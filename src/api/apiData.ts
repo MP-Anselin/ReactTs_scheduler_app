@@ -1,5 +1,5 @@
 export const getDatabase = () => {
-    let db: any = localStorage.getItem("$calendar_db");
+    let db: any = localStorage.getItem("$calendar_info");
     if(!db) {
         db = [];
         setDatabase(db);
@@ -11,6 +11,6 @@ export const getDatabase = () => {
 }
 
 export const setDatabase = (db: string | null)=> {
-    localStorage.setItem("$calendar_db", JSON.stringify(db));
+    localStorage.setItem("$calendar_info", JSON.stringify(db));
 }
 

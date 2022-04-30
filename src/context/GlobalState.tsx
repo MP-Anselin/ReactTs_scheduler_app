@@ -1,24 +1,19 @@
 import React, {createContext, useReducer} from 'react';
-import AppReducer from './AppReducer';
+import reducerAction from "./AppReducer";
 
-// Initial state
-interface IDataType {
-    date: any,
-    days: [],
-    task: null}
-
-const initialState: IDataType = {
+const initialState: any = {
     date: new Date(),
     days: [],
-    task: null}
+    task: null
+}
 
 // Create context
-export const GlobalContext = createContext({});
+export const GlobalContext = createContext(initialState);
 
 // Provider component
 // @ts-ignore
 export const GlobalProvider = ({children}) => {
-    const [state, dispatch] = useReducer(AppReducer, initialState);
+    const [state, dispatch] = useReducer(reducerAction, initialState);
 
     // Actions
     const deleteTask = (id: string) => {
@@ -42,18 +37,21 @@ export const GlobalProvider = ({children}) => {
         });
     }
 
-    const saveDate = (date: []) => {
+    const setDate = (date: []) => {
         dispatch({
-            type: 'SAVE_DATE',
+            type: 'SET_DATE',
             payload: date
         });
     }
 
     return (<GlobalContext.Provider value={{
-        tasks: state.tasks,
+        date: state.date,
+        days: state.days,
+        task: state.task,
+
         deleteTask,
         addTask,
-        saveDate,
+        setDate,
         saveTask,
     }}>
         {children}

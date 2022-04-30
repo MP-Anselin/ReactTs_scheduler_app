@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const addTask = (state: any, action: { payload: any; }) => {
     let db = getDatabase();
     const task = action.payload;
-    if(!task.id) { // new Task
+    if(!task.id) {
         task.id = uuidv4();
         db.push(task);
     } else {
