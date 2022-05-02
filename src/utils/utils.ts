@@ -1,3 +1,4 @@
+
 export const computeColor = (color: string, f: any) => {
     const compute = (c: string, f1: number) => Math.floor(Math.min(parseInt(c, 16) * f1, 255)).toString(16).padStart(2, '0');
     const b = compute(color.substring(color.length - 2, color.length), f);
@@ -33,5 +34,6 @@ export const actionInfo = {
     hour: "",
     city: "",
     country: "",
-    option: "free"
+    action: "free",
+    id: "",
 };

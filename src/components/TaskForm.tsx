@@ -3,13 +3,20 @@ import Modal from "react-modal";
 import {GlobalContext} from '../context/GlobalState'
 import {CirclePicker} from "react-color";
 import {actionInfo, modalCustomStyles} from "../utils/utils";
+import {v4 as uuidv4} from 'uuid';
+
+const setNewActionList = () => {
+    const newAc = actionInfo;
+    newAc.id = uuidv4();
+    return [newAc];
+}
 
 const TaskForm: React.FC = () => {
     const {date, task, addTask, saveTask, setDate, deleteTask} = useContext(GlobalContext);
 
     const [name, setName] = useState("");
     const [plateNumber, setPlateNumber] = useState("");
-    const [actions, setActions] = useState([actionInfo]);
+    const [actions, setActions] = useState(setNewActionList());
     const [color, setColor] = useState("#f44336");
     const [error, setError] = useState(false);
 
@@ -18,13 +25,14 @@ const TaskForm: React.FC = () => {
 
         if (task) {
             setPlateNumber(task.plateNumber || "");
-            setActions(task.actions || [actionInfo]);
+            setActions(task.actions || setNewActionList());
             setName(task.name || "");
             setColor(task.color || "#f44336");
         }
     }, [task]);
 
     const closeModal = () => {
+        setActions([actionInfo]);
         addTask(null);
         setError(false);
     };
@@ -71,13 +79,15 @@ const TaskForm: React.FC = () => {
     }
 
     const addAction = () => {
-        setActions([...actions, actionInfo]);
+        setActions([...actions, setNewActionList()[0]]);
     }
 
-    const removeAction = (index: number) => {
-        const list = [...actions];
-        list.splice(index, 1);
-        setActions(list);
+    const removeAction = (id: string) => {
+
+        let list = [...actions];
+        list = list.filter((member) => member.id !== id)
+        setActions(list)
+
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement> |
@@ -91,14 +101,15 @@ const TaskForm: React.FC = () => {
     };
 
     const returnHtmlActionList = () => {
+
         return actions.map((el, index) => {
             return (
                 <div className="box">
                     <select
                         className="my-text-input"
-                        name="actions"
-                        id="actions"
-                        value={el.option}
+                        name="action"
+                        id="action"
+                        value={el.action}
                         onChange={(e) => handleInputChange(e, index)}
                     >
                         <option value="free">free</option>
@@ -139,7 +150,7 @@ const TaskForm: React.FC = () => {
                         placeholder="Country Name"
                     />
 
-                    <button className="button button-red" onClick={() => removeAction(index)}>-</button>
+                    <button className="button button-red" onClick={() => removeAction(el.id)}>-</button>
                 </div>
             )
         })
