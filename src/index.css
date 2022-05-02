@@ -296,6 +296,12 @@ div.center {
   text-align: center;
 }
 
+div.overFlowYAction {
+  background-color: lightblue;
+  height: 200px;
+  overflow-y: auto;
+}
+
 
 .my-text-input {
   padding: 12px;

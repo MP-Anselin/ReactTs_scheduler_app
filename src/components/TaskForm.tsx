@@ -42,7 +42,7 @@ const TaskForm: React.FC = () => {
                     return true;
             }
             return false;
-        } )
+        })
 
         if (checkError.find((el: number) => el < 1) !== undefined || hasError) {
             setError(true);
@@ -81,9 +81,9 @@ const TaskForm: React.FC = () => {
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement> |
-                               React.ChangeEvent<HTMLSelectElement>,
+                                   React.ChangeEvent<HTMLSelectElement>,
                                index: number) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         const list = [...actions];
         // @ts-ignore
         list[index][name] = value;
@@ -183,7 +183,9 @@ const TaskForm: React.FC = () => {
                         <button className="button button-green" onClick={addAction}>+</button>
                     </div>
                     <br/>
-                    {returnHtmlActionList()}
+                    <div className="overFlowYAction">
+                        {returnHtmlActionList()}
+                    </div>
                 </div>
 
                 <label>Color</label>
