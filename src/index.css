@@ -268,6 +268,15 @@ header h1 {
   border-radius: 5px;
 }
 
+.MyModal {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  marginRight: -50%;
+  transform: translate(-50%, -50%);
+}
+
 input::placeholder{
   color: #e4e4e4
 }

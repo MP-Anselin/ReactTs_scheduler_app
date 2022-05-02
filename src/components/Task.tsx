@@ -3,16 +3,15 @@ import {GlobalContext} from '../context/GlobalState'
 
 interface Props {
     task: any;
-    style: any;
+    style: React.CSSProperties | undefined;
 }
-
 
 const Task: React.FC<Props> = ({task, style}) => {
 
-    const {setTask} = useContext(GlobalContext);
+    const {addTask} = useContext(GlobalContext);
 
     return (
-        <p style={style} onClick={()=> {setTask(task)}}>{task.name}</p>
+        <p style={style} onClick={()=> {addTask(task)}}>{task.name}</p>
     )
 }
 

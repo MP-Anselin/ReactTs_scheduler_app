@@ -12,27 +12,32 @@ interface Props {
 
 const Day: React.FC<Props> = ({day, date}) => {
 
-    const {setTask, setDate} = useContext(GlobalContext);
+    const {addTask, setDate} = useContext(GlobalContext);
 
     const getStyle = (color: string) => {
         return {background: color, color: contrast(color)};
     }
     const selected = sameDay(day.date, date);
+
     const style = (day.date.getMonth() !== date.getMonth() ? ' disabled' : '')
         + (sameDay(day.date, new Date()) ? ' current-day' : '')
         + (selected ? ' selected-day' : '')
+
+    const returnHtmlDayTasks = () => {
+        return day.tasks.map((task: { id: React.Key | null | undefined; color: string; }) => (
+            <Task key={task.id} task={task} style={getStyle(task.color)}/>
+        ))
+    }
+
     return (
         <div className={`day ${style}`} onClick={() => setDate(day.date)}>
             <div className="task-day">
                 <div className="tasks">
-                    {day.tasks.map((task: { id: React.Key | null | undefined; color: string; }) => (
-                        <Task key={task.id} task={task} style={getStyle(task.color)}/>
-                    ))}
-
+                    {returnHtmlDayTasks()}
                 </div>
                 <h3> {day.date.getDate()} </h3>
             </div>
-            {selected ? <div className="button button-blue add-button" onClick={() => setTask({})}>+</div> : null}
+            {selected ? <div className="button button-blue add-button" onClick={() => addTask({})}>+</div> : null}
         </div>
     )
 }
