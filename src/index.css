@@ -107,7 +107,7 @@ header h1 {
   font-size: 1.5rem;
 }
 
-.task-form input[type=text] {
+.task-form input[type=text1] {
   font-size: 2rem;
   border: 1px solid gray;
   border-radius: 5px;
@@ -279,4 +279,29 @@ header h1 {
 
 input::placeholder{
   color: #e4e4e4
+}
+
+.row1{
+  text-align:center;
+  margin:0 auto;
+}
+
+.row1 .col-md-3{
+  display:inline-block;
+  vertical-align: middle;
+  float: none;
+}
+
+div.center {
+  text-align: center;
+}
+
+
+.my-text-input {
+  padding: 12px;
+  margin: 8px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }

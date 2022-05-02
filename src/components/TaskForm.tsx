@@ -2,24 +2,23 @@ import React, {useContext, useEffect, useState} from "react";
 import Modal from "react-modal";
 import {GlobalContext} from '../context/GlobalState'
 import {CirclePicker} from "react-color";
-import {modalCustomStyles} from "../utils/utils";
+import {actionInfo, modalCustomStyles} from "../utils/utils";
 
 const TaskForm: React.FC = () => {
     const {date, task, addTask, saveTask, setDate, deleteTask} = useContext(GlobalContext);
 
     const [name, setName] = useState("");
     const [plateNumber, setPlateNumber] = useState("");
-    const [hour, setHour] = useState("");
-    const [country, setCountry] = useState("");
-    const [city, setCity] = useState("");
+    const [actions, setActions] = useState([actionInfo]);
     const [color, setColor] = useState("#f44336");
     const [error, setError] = useState(false);
+
 
     useEffect(() => {
 
         if (task) {
             setPlateNumber(task.plateNumber || "");
-            setHour(task.hour || "");
+            setActions(task.actions || [actionInfo]);
             setName(task.name || "");
             setColor(task.color || "#f44336");
         }
@@ -34,13 +33,18 @@ const TaskForm: React.FC = () => {
 
         const checkError = [
             name.trim().length || 0,
-            hour.trim().length || 0,
-            country.trim().length || 0,
-            city.trim().length || 0,
-            plateNumber.trim().length || 0,
         ]
 
-        if (checkError.find((el: number) => el < 1) !== undefined) {
+        const hasError = actions.find((el) => {
+            const values = Object.values(el);
+            for (let index in values) {
+                if (!values[index])
+                    return true;
+            }
+            return false;
+        } )
+
+        if (checkError.find((el: number) => el < 1) !== undefined || hasError) {
             setError(true);
             return;
         }
@@ -48,11 +52,11 @@ const TaskForm: React.FC = () => {
 
         saveTask({
             ...task,
-            date: date,
-            hour: hour,
-            name: name,
-            color: color,
-            plateNumber: plateNumber,
+            date,
+            name,
+            actions,
+            color,
+            plateNumber,
         });
         setDate(date);
         closeModal();
@@ -64,6 +68,81 @@ const TaskForm: React.FC = () => {
         setDate(date);
         closeModal();
         setError(false);
+    }
+
+    const addAction = () => {
+        setActions([...actions, actionInfo]);
+    }
+
+    const removeAction = (index: number) => {
+        const list = [...actions];
+        list.splice(index, 1);
+        setActions(list);
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement> |
+                               React.ChangeEvent<HTMLSelectElement>,
+                               index: number) => {
+        const { name, value } = e.target;
+        const list = [...actions];
+        // @ts-ignore
+        list[index][name] = value;
+        setActions(list);
+    };
+
+    const returnHtmlActionList = () => {
+        return actions.map((el, index) => {
+            return (
+                <div className="box">
+                    <select
+                        className="my-text-input"
+                        name="actions"
+                        id="actions"
+                        value={el.option}
+                        onChange={(e) => handleInputChange(e, index)}
+                    >
+                        <option value="free">free</option>
+                        <option value="arrived">arrived</option>
+                        <option value="not available">not available</option>
+                        <option value="unavailable">unavailable</option>
+                        <option value="leave">leave</option>
+                    </select>
+                    &nbsp;&nbsp;
+
+                    <input name="hour"
+                           className="my-text-input"
+                           value={el.hour}
+                           type="time"
+                           id="hour"
+                           min="09:00"
+                           max="18:00"
+                           onChange={(e) => handleInputChange(e, index)}
+                    />
+
+                    <input
+                        className="my-text-input"
+                        type="text"
+                        id="city"
+                        name="city"
+                        value={el.city}
+                        onChange={(e) => handleInputChange(e, index)}
+                        placeholder="City Name"
+                    />
+
+                    <input
+                        className="my-text-input"
+                        type="text"
+                        id="country-"
+                        name="country"
+                        value={el.country}
+                        onChange={(e) => handleInputChange(e, index)}
+                        placeholder="Country Name"
+                    />
+
+                    <button className="button button-red" onClick={() => removeAction(index)}>-</button>
+                </div>
+            )
+        })
     }
 
     return (
@@ -81,40 +160,12 @@ const TaskForm: React.FC = () => {
                     name="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    type="text"
+                    type="text1"
                     placeholder="Driver Name"
                 />
 
-                <label>Country</label>
-                <input
-                    name="name"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    type="text"
-                    placeholder="Country Name"
-                />
-
-                <label>City</label>
-                <input
-                    name="name"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    type="text"
-                    placeholder="City Name"
-                />
-
-                <label>Hours</label>
-                <input name="hour"
-                       value={hour}
-                       type="time"
-                       id="hour"
-                       min="09:00"
-                       max="18:00"
-                       onChange={(e) => setHour(e.target.value)}
-                />
-
                 <label>Plate Number</label>
-                <input type="text"
+                <input type="text1"
                        value={plateNumber}
                        placeholder="ex : Aa-999-Aa"
                        name="number plate"
@@ -123,8 +174,19 @@ const TaskForm: React.FC = () => {
                        onChange={(e) => setPlateNumber(e.target.value)}
                 />
 
-                <label>Color</label>
+                <br/>
 
+                <div className="center">
+                    <div className="row1">
+                        <label>Actions</label>
+                        &nbsp;&nbsp;
+                        <button className="button button-green" onClick={addAction}>+</button>
+                    </div>
+                    <br/>
+                    {returnHtmlActionList()}
+                </div>
+
+                <label>Color</label>
                 <div>
                     <CirclePicker
                         color={color}
