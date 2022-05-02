@@ -1,1 +1,0 @@
-# reactts_scheduler_app

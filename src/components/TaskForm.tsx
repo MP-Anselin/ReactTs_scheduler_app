@@ -10,6 +10,8 @@ const TaskForm: React.FC = () => {
     const [name, setName] = useState("");
     const [plateNumber, setPlateNumber] = useState("");
     const [hour, setHour] = useState("");
+    const [country, setCountry] = useState("");
+    const [city, setCity] = useState("");
     const [color, setColor] = useState("#f44336");
     const [error, setError] = useState(false);
 
@@ -30,10 +32,15 @@ const TaskForm: React.FC = () => {
 
     const _saveTask = () => {
 
-        if (name.trim().length < 1 ||
-            hour.trim().length < 1 ||
-            plateNumber.trim().length < 1
-        ) {
+        const checkError = [
+            name.trim().length || 0,
+            hour.trim().length || 0,
+            country.trim().length || 0,
+            city.trim().length || 0,
+            plateNumber.trim().length || 0,
+        ]
+
+        if (checkError.find((el: number) => el < 1) !== undefined) {
             setError(true);
             return;
         }
@@ -75,11 +82,28 @@ const TaskForm: React.FC = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     type="text"
-                    placeholder="Task Name"
+                    placeholder="Driver Name"
+                />
+
+                <label>Country</label>
+                <input
+                    name="name"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    type="text"
+                    placeholder="Country Name"
+                />
+
+                <label>City</label>
+                <input
+                    name="name"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    type="text"
+                    placeholder="City Name"
                 />
 
                 <label>Hours</label>
-
                 <input name="hour"
                        value={hour}
                        type="time"
@@ -90,9 +114,9 @@ const TaskForm: React.FC = () => {
                 />
 
                 <label>Plate Number</label>
-
                 <input type="text"
                        value={plateNumber}
+                       placeholder="ex : Aa-999-Aa"
                        name="number plate"
                        pattern="^([A-Za-z]{2}-?[0-9]{3}-?[A-Za-z]{2})?([0-9]{4}-?[A-Za-z]{2}-?[0-9]{2})?([0-9]{3}-?[A-Za-z]{3}-?[0-9]{2})?$"
                        title="French Number Plate"
