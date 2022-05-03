@@ -1,18 +1,24 @@
-import React, { useContext } from 'react'
-import {GlobalContext} from '../context/GlobalState'
+import React, { useContext } from 'react';
+import { GlobalContext } from '../context/GlobalState';
 
 interface Props {
-    task: any;
-    style: React.CSSProperties | undefined;
+  task: any;
+  style: React.CSSProperties | undefined;
 }
 
-const Task: React.FC<Props> = ({task, style}) => {
+const Task: React.FC<Props> = ({ task, style }) => {
+  const { addTask } = useContext(GlobalContext);
 
-    const {addTask} = useContext(GlobalContext);
+  return (
+    <p
+      style={style}
+      onClick={() => {
+        addTask(task);
+      }}
+    >
+      {task.name}
+    </p>
+  );
+};
 
-    return (
-        <p style={style} onClick={()=> {addTask(task)}}>{task.name}</p>
-    )
-}
-
-export default Task
+export default Task;
