@@ -3,20 +3,13 @@ import Modal from "react-modal";
 import {GlobalContext} from '../context/GlobalState'
 import {CirclePicker} from "react-color";
 import {actionInfo, modalCustomStyles} from "../utils/utils";
-import {v4 as uuidv4} from 'uuid';
-
-const setNewActionList = () => {
-    const newAc = actionInfo;
-    newAc.id = uuidv4();
-    return [newAc];
-}
 
 const TaskForm: React.FC = () => {
     const {date, task, addTask, saveTask, setDate, deleteTask} = useContext(GlobalContext);
 
     const [name, setName] = useState("");
     const [plateNumber, setPlateNumber] = useState("");
-    const [actions, setActions] = useState(setNewActionList());
+    const [actions, setActions] = useState([actionInfo()]);
     const [color, setColor] = useState("#f44336");
     const [error, setError] = useState(false);
 
@@ -25,14 +18,14 @@ const TaskForm: React.FC = () => {
 
         if (task) {
             setPlateNumber(task.plateNumber || "");
-            setActions(task.actions || setNewActionList());
+            setActions(task.actions || [actionInfo()]);
             setName(task.name || "");
             setColor(task.color || "#f44336");
         }
     }, [task]);
 
     const closeModal = () => {
-        setActions([actionInfo]);
+        setActions([actionInfo()]);
         addTask(null);
         setError(false);
     };
@@ -79,11 +72,10 @@ const TaskForm: React.FC = () => {
     }
 
     const addAction = () => {
-        setActions([...actions, setNewActionList()[0]]);
+        setActions([...actions, actionInfo()]);
     }
 
     const removeAction = (id: string) => {
-
         let list = [...actions];
         list = list.filter((member) => member.id !== id)
         setActions(list)

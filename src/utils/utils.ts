@@ -1,11 +1,4 @@
-
-export const computeColor = (color: string, f: any) => {
-    const compute = (c: string, f1: number) => Math.floor(Math.min(parseInt(c, 16) * f1, 255)).toString(16).padStart(2, '0');
-    const b = compute(color.substring(color.length - 2, color.length), f);
-    const g = compute(color.substring(color.length - 4, color.length - 2), f);
-    const r = compute(color.substring(color.length - 6, color.length - 4), f);
-    return `${(color.charAt(0) === '#') ? '#' : ''}${r}${g}${b}`;
-}
+import {v4 as uuidv4} from "uuid";
 
 export const contrast = (color: string, threshold = 0.5) => {
 
@@ -30,10 +23,14 @@ export const modalCustomStyles = {
     },
 };
 
-export const actionInfo = {
-    hour: "",
-    city: "",
-    country: "",
-    action: "free",
-    id: "",
+export const actionInfo = () => {
+    return (
+        {
+            hour: "",
+            city: "",
+            country: "",
+            action: "",
+            id: uuidv4(),
+        }
+    )
 };
